@@ -19,3 +19,8 @@ module "vpc" {
     az2 = var.az2
   
 }
+
+module "security" {
+  source = "./modules/security"
+  vpc_id = module.vpc.vpc_id
+}
