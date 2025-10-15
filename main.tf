@@ -34,3 +34,10 @@ module "rds" {
   db_password = var.db_password
 
 }
+
+module "ecs" {
+  source = "./modules/ecs"
+  database_url = "postgresql://${var.db_username}:${var.db_password}@${module.rds.db_endpoint}/${module.rds.db_name}"
+  private_subnet_ids = module.vpc.private_subnets_ids
+  ecs_security_group_id = [module.security.ecs_sg_id]
+}
