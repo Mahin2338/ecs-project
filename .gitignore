@@ -1,16 +1,15 @@
-
-**/.terraform/*
-
-
+**/.terraform/
+**/terraform.tfstate
+**/terraform.tfstate.*
+**/*.tfvars
 *.tfstate
 *.tfstate.*
 
 
-crash.log
-crash.*.log
 
-*.tfvars
-*.tfvars.json
+.env
+.env.*
+*.env
 
 
-.terraform.lock.hcl
+*.log

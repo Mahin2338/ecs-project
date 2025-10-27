@@ -1,0 +1,22 @@
+name: Deploy Umami on AWS
+
+on:
+  push:
+    branches: [main]
+
+
+env:
+  AWS_REGION: eu-west-2
+  ECR_REPOSITORY: Umami
+  ECS_CLUSTER: umami-cluster
+  ECS_SERVICE: umami-service
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+
