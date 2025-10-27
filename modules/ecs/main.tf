@@ -54,7 +54,7 @@ resource "aws_ecs_task_definition" "app" {
   container_definitions = jsonencode ([{
 
     name = "umami"
-    image = "ghcr.io/umami-software/umami:postgresql-latest"
+    image = var.image_url
     
 
     portMappings = [{
@@ -103,6 +103,11 @@ resource "aws_ecs_service" "app" {
       assign_public_ip = false
     }
 
+    load_balancer {
+    target_group_arn = var.target_group_arn
+    container_name   = "umami"
+    container_port   = 3000
+    }
   tags = {
     Name = "umami-service"
   }
