@@ -14,7 +14,7 @@ tags = {
 resource "aws_db_instance" "main" {
     identifier = "umami-db"
     engine = "postgres"
-    engine_version = "16.3"
+    engine_version = "16"
     instance_class = "db.t3.micro"
     allocated_storage = 20
 
