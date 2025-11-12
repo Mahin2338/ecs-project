@@ -56,7 +56,7 @@ jobs:
           aws ecs update-service \
             --cluster umami-cluster \
             --service umami-service \
-            -- force-new-deployment \
+            --force-new-deployment \
             --region eu-west-2
 
 
