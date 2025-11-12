@@ -31,7 +31,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build Docker image
-        run: docker build -t umami:latest .
+        run: docker build -t umami:latest -f Dockerfile ./umami
 
       - name: Tag image
         env:
