@@ -1,3 +1,7 @@
+
+
+
+
 terraform {
   required_providers {
     aws = {
@@ -19,6 +23,8 @@ module "vpc" {
     az2 = var.az2
   
 }
+
+
 
 module "security" {
   source = "./modules/security"
@@ -50,6 +56,6 @@ module "alb" {
   vpc_id = module.vpc.vpc_id
   public_subnets_id = module.vpc.public_subnets_ids
   alb_security_group_id = module.security.alb_sg_id
-
-
+  certificate_arn = "arn:aws:acm:eu-west-2:289603501582:certificate/9ab50789-fdca-4244-83b2-3bc1de2e12b7"
+  
 }

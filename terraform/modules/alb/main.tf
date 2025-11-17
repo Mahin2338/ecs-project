@@ -5,6 +5,7 @@ resource "aws_lb" "main" {
   security_groups = [var.alb_security_group_id]
   subnets = var.public_subnets_id
 
+
 tags = {
   Name = "umami-lb"
 }
@@ -52,6 +53,25 @@ resource "aws_lb_listener" "http" {
 
 tags = {
   Name = "umami-listener"
+}
+
+}
+
+resource "aws_lb_listener" "https" {
+
+    load_balancer_arn = aws_lb.main.arn
+    port = 443
+    protocol = "HTTPS"
+    ssl_policy = "ELBSecurityPolicy-2016-08"
+    certificate_arn = "arn:aws:acm:eu-west-2:289603501582:certificate/9ab50789-fdca-4244-83b2-3bc1de2e12b7"
+    
+    default_action {
+      type = "forward"
+      target_group_arn = aws_lb_target_group.app.arn
+    }
+
+tags = {
+  Name = "umami-listener-https"
 }
 
 }
