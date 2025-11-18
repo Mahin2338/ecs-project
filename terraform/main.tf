@@ -57,5 +57,4 @@ module "alb" {
   public_subnets_id = module.vpc.public_subnets_ids
   alb_security_group_id = module.security.alb_sg_id
   certificate_arn = data.aws_acm_certificate.main.arn
-  
 }
