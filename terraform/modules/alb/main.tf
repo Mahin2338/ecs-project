@@ -47,12 +47,17 @@ resource "aws_lb_listener" "http" {
     protocol = "HTTP"
     
     default_action {
-      type = "forward"
-      target_group_arn = aws_lb_target_group.app.arn
+      type = "redirect"
+      redirect {
+        port = "443"
+        protocol = "HTTPS"
+        status_code = "HTTP_301"
+      }
+      
     }
 
 tags = {
-  Name = "umami-listener"
+  Name = "umami-listener-redirect"
 }
 
 }
@@ -63,7 +68,7 @@ resource "aws_lb_listener" "https" {
     port = 443
     protocol = "HTTPS"
     ssl_policy = "ELBSecurityPolicy-2016-08"
-    certificate_arn = "arn:aws:acm:eu-west-2:289603501582:certificate/9ab50789-fdca-4244-83b2-3bc1de2e12b7"
+    certificate_arn = var.certificate_arn
     
     default_action {
       type = "forward"
