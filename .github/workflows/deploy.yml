@@ -1,0 +1,72 @@
+name: Deploy Umami on AWS
+
+on:
+  push:
+    branches: [main]
+
+
+env:
+  AWS_REGION: eu-west-2
+  ECR_REPOSITORY: Umami
+  ECS_CLUSTER: umami-cluster
+  ECS_SERVICE: umami-service
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACESS_KEY }}
+          aws-region: eu-west-2
+
+      - name: Login to Amazon ECR 
+        id: login-ecr 
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build Docker image
+        run: docker build -t umami:latest -f Dockerfile ./umami
+
+      - name: Tag image
+        env:
+         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+         ECR_REPOSITORY: umami
+         IMAGE_TAG: latest
+
+        run: |
+          docker tag umami:latest $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Push image to ECR
+        env:
+         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+         ECR_REPOSITORY: umami
+         IMAGE_TAG: latest 
+
+        run: | 
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Update ECS service
+        run: | 
+          aws ecs update-service \
+            --cluster umami-cluster \
+            --service umami-service \
+            --force-new-deployment \
+            --region eu-west-2
+
+
+      - name: Wait for deployment
+        run: |
+          aws ecs wait services-stable \
+          --cluster umami-cluster \
+          --services umami-service \
+          --region eu-west-2
+
+
+
+
