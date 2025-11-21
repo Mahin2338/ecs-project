@@ -1,20 +1,22 @@
 variable "az1" {
-    type = string
-  
+  type = string
+
 }
 
 variable "az2" {
-    type = string
-  
+  type = string
+
 }
 
 
 
 variable "db_username" {
-  type = string
+  type      = string
+  sensitive = true
 }
 
 variable "db_password" {
-    type = string
-  
+  type      = string
+  sensitive = true
+
 }
