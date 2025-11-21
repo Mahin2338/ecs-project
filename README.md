@@ -53,6 +53,11 @@ The containers live in private subnets and can't be accessed directly from the i
 │       └── deploy.yml
 └── README.md
 ```
+## The diagram 
+<img width="1151" height="1151" alt="ECS drawio" src="https://github.com/user-attachments/assets/54d07dea-c335-4290-9cf1-798e022dd464" />
+
+
+
 
 ## How It Works
 
